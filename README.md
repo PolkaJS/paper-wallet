@@ -1,19 +1,15 @@
-# skeleton-module [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![Greenkeeper badge](https://badges.greenkeeper.io/PolkaJS/skeleton-module.svg)](https://greenkeeper.io/)
+# paper-wallet [![travis][travis-image]][travis-url] [![npm][npm-image]][npm-url] [![downloads][downloads-image]][downloads-url] [![Greenkeeper badge](https://badges.greenkeeper.io/PolkaJS/paper-wallet.svg)](https://greenkeeper.io/)
 
-[travis-image]: https://travis-ci.org/PolkaJS/skeleton-module.svg?branch=master
-[travis-url]: https://travis-ci.org/PolkaJS/skeleton-module
-[npm-image]: https://img.shields.io/npm/v/@polkajs/skeleton-module.svg
-[npm-url]: https://npmjs.org/package/@polkajs/skeleton-module
-[downloads-image]: https://img.shields.io/npm/dm/@polkajs/skeleton-module.svg
-[downloads-url]: https://npmjs.org/package/@polkajs/skeleton-module
+[travis-image]: https://travis-ci.org/PolkaJS/paper-wallet.svg?branch=master
+[travis-url]: https://travis-ci.org/PolkaJS/paper-wallet
+[npm-image]: https://img.shields.io/npm/v/@polkajs/paper-wallet.svg
+[npm-url]: https://npmjs.org/package/@polkajs/paper-wallet
+[downloads-image]: https://img.shields.io/npm/dm/@polkajs/paper-wallet.svg
+[downloads-url]: https://npmjs.org/package/@polkajs/paper-wallet
 
 ## About
 
-**Create new modules with this skeleton**
-
-`git clone https://github.com/PolkaJS/skeleton-module.git`
-
-`git remote rm origin`
+**Generate a paper wallet, given a private key, address, and 12 word recovery phrase**
 
 ---
 

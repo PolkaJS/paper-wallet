@@ -11,7 +11,7 @@
 //   ecl: "M"
 // });
 //
-// qrcode.save("sample.svg", function(error) {
+// qrcode.save("sample.png", function(error) {
 //   if (error) throw error;
 //   console.log("Done!");
 // });
