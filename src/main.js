@@ -4,35 +4,36 @@ const downloadsFolder = require('downloads-folder');
 const PDFDocument     = require('pdfkit');
 const fs              = require('fs');
 const qr              = require('qr-image');
+const blobStream      = require('blob-stream');
 
 const FS_ADDRESS = fs.createWriteStream(__dirname + '/ADDRESS.png');
 const FS_PRIVATE = fs.createWriteStream(__dirname + '/PRIVATE.png');
-const ADDRESS    = '0xcec0fac7e6c55ffef28e6e71298ad388a87a490c';
-const PRIVATE    = '8fd60f9404ccdd72868d4593acd2bd100e7d3881740a368';
 
 module.exports.createPDF = function(address: string, privateKey: string, phrase: Array<string>) {
-  let qrAddress = qr.image(ADDRESS, {
+  let qrAddress = qr.image(address, {
     ec_level: 'M',
     size: 7,
     margin: 1
   });
 
-  let qrPrivate = qr.image(PRIVATE, {
+  let qrPrivate = qr.image(privateKey, {
     ec_level: 'M',
     size: 9,
     margin: 1
   });
 
+  const doc = new PDFDocument({
+    margins: {
+      top: 18,
+      bottom: 18,
+      left: 18,
+      right: 18
+    }
+  });
+
+  let stream = doc.pipe(blobStream()); // write to PDF
+
   FS_PRIVATE.on('finish', () => {
-    const doc         = new PDFDocument({
-      margins: {
-        top: 18,
-        bottom: 18,
-        left: 18,
-        right: 18
-      }
-    });
-    doc.pipe(fs.createWriteStream(`${downloadsFolder()}/parity_wallet.pdf`)) // write to PDF
 
     doc.image(__dirname + '/ADDRESS.png', 25, 50, {fit: [100, 100]})
     doc.image(__dirname + '/YOUR_ADDRESS.png', 130, 50, {fit: [100, 100]})
@@ -44,11 +45,11 @@ module.exports.createPDF = function(address: string, privateKey: string, phrase:
     doc.font(__dirname + '/../assets/Hack-Regular.ttf')
       .fontSize('10')
       .fillColor('white')
-      .text(`Your Address: ${ADDRESS}`, 0, 200, {
+      .text(`Your Address: ${address}`, 0, 200, {
         width: 570,
         align: 'right'
       })
-      .text(`Your Private Key: ${PRIVATE}`, 0, 227, {
+      .text(`Your Private Key: ${privateKey}`, 0, 227, {
         width: 570,
         align: 'right'
       });
@@ -78,7 +79,7 @@ module.exports.createPDF = function(address: string, privateKey: string, phrase:
         align: 'center'
     });
 
-    doc.rect(25, 185, 560, 65).fillColor('#62688F').fill()
+    doc.rect(25, 185, 560, 65).fillColor('#62688F').fill();
     doc.font(__dirname + '/../assets/Hack-Regular.ttf')
       .fontSize('8')
       .fillColor('white')
@@ -88,11 +89,15 @@ module.exports.createPDF = function(address: string, privateKey: string, phrase:
         {
           width: 550,
           align: 'left'
-      })
+      });
 
-    doc.end()
+    doc.end();
   });
 
   qrAddress.pipe(FS_ADDRESS);
   qrPrivate.pipe(FS_PRIVATE);
+
+  stream.on('finish', () => {
+    return stream.toBlobURL('application/pdf');
+  });
 }
